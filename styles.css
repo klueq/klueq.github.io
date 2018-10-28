@@ -1,3 +1,4 @@
 body {
   font: 10pt "Lucida Console";
+  word-break: break-all;
 }
