@@ -29,21 +29,25 @@ async function init() {
       }
     }    
   });
-
-  const fcid = 'QmQ2r6iMNpky5f1m4cnm3Yqw8VSvjuKpTcK1X7dBR1LkJF';
+  
   await new Promise(resolve => ipfs.on('ready', resolve));
   let {version} = await ipfs.version();
   log('ipfs.version: ' + version);
   
-  log('window.ipfs is ready');
-  log('ipfs.files.get ' + fcid);
-  
-  let files = await ipfs.files.get(fcid);
-  log('ipfs.files.get -> ' + files);
-  
-  let blob = new Blob([files[1].content], {type: 'image/gif'});
-  let url = URL.createObjectURL(blob);
-  document.body.innerHTML += `<img src="${url}">`;
+  let fcids = [
+    'QmQ2r6iMNpky5f1m4cnm3Yqw8VSvjuKpTcK1X7dBR1LkJF', // cats
+    'QmRW3V9znzFW9M5FYbitSEvd5dQrPWGvPvgQD6LM22Tv8D', // wiki logo
+  ];
+
+  for (let fcid of fcids) {
+    log('ipfs.files.get ' + fcid);
+    let files = await ipfs.files.get(fcid);
+    log('ipfs.files.get -> ' + files);
+
+    let blob = new Blob([files[1].content], {type: 'image/gif'});
+    let url = URL.createObjectURL(blob);
+    document.body.innerHTML += `<img src="${url}">`;
+  }
 }
 
 function loadScript() {
