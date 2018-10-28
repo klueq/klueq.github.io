@@ -7,9 +7,10 @@ window.onload = () => {
 };
 
 async function init() {
-  log('initializing ipfs');
+  log('loading the ipfs script');
   await loadScript();
   
+  log('starting ipfs node');
   window.IPFS = window.IPFS || window.Ipfs;
   window.ipfs = new IPFS({
     config: {
