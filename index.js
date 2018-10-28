@@ -1,3 +1,5 @@
+log('initializing ipfs');
+
 window.IPFS = window.IPFS || window.Ipfs;
 window.ipfs = new IPFS({
   config: {
@@ -12,6 +14,18 @@ window.ipfs = new IPFS({
   }
 });
 
+const fcid = 'QmQ2r6iMNpky5f1m4cnm3Yqw8VSvjuKpTcK1X7dBR1LkJF';
+
 ipfs.on('ready', () => {
-  console.log('window.ipfs is ready');
+  log('window.ipfs is ready');
+  log('ipfs.files.get ' + fcid);
+  
+  ipfs.files.get(fcid).then(
+    res => log('ipfs.files.get -> ' + res),
+    err => log('ipfs.files.get -> ' + err));
 });
+
+function log(str) {
+  console.log(str);
+  document.body.innerHTML += '<p>' + str;
+}
