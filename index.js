@@ -21,7 +21,13 @@ async function init() {
     },  
     EXPERIMENTAL: {
       pubsub: true
-    }
+    },
+    relay: {
+      enabled: true,
+      hop: {
+        enabled: true
+      }
+    }    
   });
 
   const fcid = 'QmQ2r6iMNpky5f1m4cnm3Yqw8VSvjuKpTcK1X7dBR1LkJF';
