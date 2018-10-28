@@ -1,4 +1,10 @@
 window.onload = () => {
+  init().catch(err => {
+     log(err);
+  });
+};
+
+async function init() {
   log('initializing ipfs');
 
   window.IPFS = window.IPFS || window.Ipfs;
@@ -16,16 +22,14 @@ window.onload = () => {
   });
 
   const fcid = 'QmQ2r6iMNpky5f1m4cnm3Yqw8VSvjuKpTcK1X7dBR1LkJF';
-
-  ipfs.on('ready', () => {
-    log('window.ipfs is ready');
-    log('ipfs.files.get ' + fcid);
-
-    ipfs.files.get(fcid).then(
-      res => log('ipfs.files.get -> ' + res),
-      err => log('ipfs.files.get -> ' + err));
-  });
-};
+  await new Promise(resolve => ipfs.on('ready', resolve));
+  
+  log('window.ipfs is ready');
+  log('ipfs.files.get ' + fcid);
+  
+  let files = await ipfs.files.get(fcid);
+  log(files.map(f => f.path));
+}
 
 function log(str) {
   console.log(str);
