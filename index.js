@@ -2,7 +2,7 @@ const basetime = Date.now();
 
 window.onload = () => {
   init().catch(err => {
-     log(err);
+     log(err && err.stack || err);
   });
 };
 
@@ -44,9 +44,14 @@ async function init() {
     let files = await ipfs.files.get(fcid);
     log('ipfs.files.get -> ' + files);
 
-    let blob = new Blob([files[1].content], {type: 'image/gif'});
-    let url = URL.createObjectURL(blob);
-    document.body.innerHTML += `<img src="${url}">`;
+    for (let file of files) {
+      let data = file.content;
+      if (data) {
+        let blob = new Blob([data], {type: 'image/jpeg'});
+        let url = URL.createObjectURL(blob);
+        document.body.innerHTML += `<img src="${url}">`;
+      }
+    }
   }
 }
 
