@@ -1,44 +1,33 @@
 const basetime = Date.now();
 
+const config = {
+  relay: {enabled: true, hop: {enabled: true}},
+  Addresses: {Swarm: ['/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star']},
+  EXPERIMENTAL: {pubsub: true},
+};
+
+const fcids = [
+  ['QmQ2r6iMNpky5f1m4cnm3Yqw8VSvjuKpTcK1X7dBR1LkJF', 'image/gif'], // cats
+  ['QmRW3V9znzFW9M5FYbitSEvd5dQrPWGvPvgQD6LM22Tv8D', 'image/svg+xml'], // wiki logo
+];
+
 window.onload = () => {
-  init().catch(err => {
-     log(err && err.stack || err);
-  });
+  init().then(
+    res => log('done'),
+    err => log(err && err.stack || err));
 };
 
 async function init() {
   log('loading the ipfs script');
   await loadScript();
   
-  log('starting ipfs node');
+  log('starting ipfs node: ' + JSON.stringify(config));
   window.IPFS = window.IPFS || window.Ipfs;
-  window.ipfs = new IPFS({
-    config: {
-      Addresses: {
-        Swarm: [
-          '/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star'
-        ]
-      }
-    },  
-    EXPERIMENTAL: {
-      pubsub: true
-    },
-    relay: {
-      enabled: true,
-      hop: {
-        enabled: true
-      }
-    }    
-  });
+  window.ipfs = new IPFS({ config });
   
   await new Promise(resolve => ipfs.on('ready', resolve));
   let {version} = await ipfs.version();
   log('ipfs.version: ' + version);
-  
-  let fcids = [
-    ['QmQ2r6iMNpky5f1m4cnm3Yqw8VSvjuKpTcK1X7dBR1LkJF', 'image/gif'], // cats
-    ['QmRW3V9znzFW9M5FYbitSEvd5dQrPWGvPvgQD6LM22Tv8D', 'image/svg+xml'], // wiki logo
-  ];
 
   for (let [fcid, mime] of fcids) {
     log('ipfs.files.get ' + fcid);
