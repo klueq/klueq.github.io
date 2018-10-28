@@ -44,7 +44,7 @@ function log(str) {
   let tstr = time.toFixed(1);
   while (tstr.length < 5)
     tstr = '0' + tstr;
-  str = '[+' + tstr + '] ' + str;
+  str = '[+' + tstr + 's] ' + str;
   console.log(str);
   document.body.innerHTML += '<p>' + str;
 }
