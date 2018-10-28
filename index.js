@@ -28,7 +28,7 @@ async function init() {
   log('ipfs.files.get ' + fcid);
   
   let files = await ipfs.files.get(fcid);
-  log(files.map(f => f.path));
+  log('ipfs.files.get -> ' + files);
 }
 
 function log(str) {
