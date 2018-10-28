@@ -29,6 +29,10 @@ async function init() {
   
   let files = await ipfs.files.get(fcid);
   log('ipfs.files.get -> ' + files);
+  
+  let blob = new Blob([files[1].content], {type: 'image/gif'});
+  let url = URL.createObjectURL(blob);
+  document.body.innerHTML += `<img src="${url}">`;
 }
 
 function log(str) {
