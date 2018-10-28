@@ -1,3 +1,5 @@
+const basetime = Date.now();
+
 window.onload = () => {
   init().catch(err => {
      log(err);
@@ -38,6 +40,11 @@ async function init() {
 }
 
 function log(str) {
+  let time = (Date.now() - basetime)/1000;
+  let tstr = time.toFixed(1);
+  while (tstr.length < 5)
+    tstr = '0' + tstr;
+  str = '[+' + tstr + '] ' + str;
   console.log(str);
   document.body.innerHTML += '<p>' + str;
 }
