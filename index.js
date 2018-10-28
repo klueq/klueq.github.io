@@ -8,7 +8,8 @@ window.onload = () => {
 
 async function init() {
   log('initializing ipfs');
-
+  await loadScript();
+  
   window.IPFS = window.IPFS || window.Ipfs;
   window.ipfs = new IPFS({
     config: {
@@ -37,6 +38,19 @@ async function init() {
   let blob = new Blob([files[1].content], {type: 'image/gif'});
   let url = URL.createObjectURL(blob);
   document.body.innerHTML += `<img src="${url}">`;
+}
+
+function loadScript() {
+  return new Promise((resolve, reject) => {
+    let ver = location.search.slice(1) || 'latest';
+    let url = `https://unpkg.com/ipfs@${ver}/dist/index.js`;
+    log('script: ' + url);
+    let script = document.createElement('script');
+    script.src = url;
+    script.onerror = reject;
+    script.onload = resolve;
+    document.head.appendChild(script);
+  });
 }
 
 function log(str) {
