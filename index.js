@@ -23,6 +23,8 @@ async function init() {
 
   const fcid = 'QmQ2r6iMNpky5f1m4cnm3Yqw8VSvjuKpTcK1X7dBR1LkJF';
   await new Promise(resolve => ipfs.on('ready', resolve));
+  let {version} = await ipfs.version();
+  log('ipfs.version: ' + version);
   
   log('window.ipfs is ready');
   log('ipfs.files.get ' + fcid);
