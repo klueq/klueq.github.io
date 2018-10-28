@@ -35,11 +35,11 @@ async function init() {
   log('ipfs.version: ' + version);
   
   let fcids = [
-    'QmQ2r6iMNpky5f1m4cnm3Yqw8VSvjuKpTcK1X7dBR1LkJF', // cats
-    'QmRW3V9znzFW9M5FYbitSEvd5dQrPWGvPvgQD6LM22Tv8D', // wiki logo
+    ['QmQ2r6iMNpky5f1m4cnm3Yqw8VSvjuKpTcK1X7dBR1LkJF', 'image/gif'], // cats
+    ['QmRW3V9znzFW9M5FYbitSEvd5dQrPWGvPvgQD6LM22Tv8D', 'image/svg+xml'], // wiki logo
   ];
 
-  for (let fcid of fcids) {
+  for (let [fcid, mime] of fcids) {
     log('ipfs.files.get ' + fcid);
     let files = await ipfs.files.get(fcid);
     log('ipfs.files.get -> ' + files);
@@ -47,7 +47,7 @@ async function init() {
     for (let file of files) {
       let data = file.content;
       if (data) {
-        let blob = new Blob([data], {type: 'image/jpeg'});
+        let blob = new Blob([data], {type: mime});
         let url = URL.createObjectURL(blob);
         document.body.innerHTML += `<img src="${url}">`;
       }
