@@ -9,6 +9,7 @@ const config = {
 const fcids = [
   ['QmQ2r6iMNpky5f1m4cnm3Yqw8VSvjuKpTcK1X7dBR1LkJF', 'image/gif'], // cats
   ['QmRW3V9znzFW9M5FYbitSEvd5dQrPWGvPvgQD6LM22Tv8D', 'image/svg+xml'], // wiki logo
+  ['QmXXtHtDwXFbCTzMDjacZxid6CCNY4m5oM6MgBhyPVT3Tr', 'text/plain'], // random text
 ];
 
 window.onload = () => {
