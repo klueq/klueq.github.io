@@ -30,6 +30,9 @@ async function init() {
   await new Promise(resolve => ipfs.on('ready', resolve));
   let {version} = await ipfs.version();
   log('ipfs.version: ' + version);
+  
+  let self = await ipfs.id();
+  log('ipfs.id: ' + self.id);
 
   for (let [fcid, mime] of fcids) {
     log('ipfs.files.get ' + fcid);
