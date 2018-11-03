@@ -58,7 +58,7 @@ async function init() {
 function loadScript() {
   return new Promise((resolve, reject) => {
     let ver = location.search.slice(1) || 'latest';
-    let url = `https://unpkg.com/ipfs@${ver}/dist/index.js`;
+    let url = /\.js$/.test(ver) ? ver : `https://unpkg.com/ipfs@${ver}/dist/index.js`;
     log('script: ' + url);
     let script = document.createElement('script');
     script.src = url;
