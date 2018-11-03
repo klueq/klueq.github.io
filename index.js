@@ -3,8 +3,6 @@ const basetime = Date.now();
 const config = {
   relay: {enabled: true, hop: {enabled: true}},
   Addresses: {Swarm: ['/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star']},
-  dht: {kBucketSize: 20, enabledDiscovery: true},
-  EXPERIMENTAL: {dht: true, pubsub: true},
 };
 
 const fcids = [
