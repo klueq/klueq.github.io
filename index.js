@@ -62,7 +62,7 @@ async function init() {
     log(portname + ':', ...args);
   });
   
-  let remotePeer = 'qwerty';
+  let remotePeer = 'QmXcBNGp2SBzbogsbEnHxdrokw6te9y2RU9rKYD1sQc1km';
   log('ipfs.p2p.dial', remotePeer + ':' + portname);
   nodeDialer.dialProtocol(remotePeer, portname, (...args) => {
     log('ipfd.p2p.dial ->', ...args);
