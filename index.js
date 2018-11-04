@@ -57,18 +57,13 @@ async function init() {
   for (let data of await ipfs.files.get(txtcid))  
     log('ipfs.files.get -> ' + String.fromCharCode(...data.content));
   
-  log('ipfs.p2p.on', 'peer:connect');
-  ipfs._libp2pNode.on('peer:connect', peer => {
-      log('peer:connect', peer.id.toB58String());
-  });
-  
   log('ipfs.libp2p.handle:', portname);
   ipfs._libp2pNode.handle(portname, (...args) => {
     log(portname + ':', ...args);
   });
   
   let remotePeer = 'qwerty';
-  log('ipfs.p2p.dial', remotePeer + ':' + portName);
+  log('ipfs.p2p.dial', remotePeer + ':' + portname);
   nodeDialer.dialProtocol(remotePeer, portname, (...args) => {
     log('ipfd.p2p.dial ->', ...args);
   });
