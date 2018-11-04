@@ -2,3 +2,11 @@ body {
   font: 15pt "Arial";
   word-break: break-all;
 }
+
+a#github {
+  position: fixed;
+  top: 10pt;
+  right: 10pt;
+  color: gray;
+  text-decoration: none;
+}
