@@ -1,10 +1,14 @@
 const basetime = Date.now();
 
-const config = {
-  relay: {enabled: true, hop: {enabled: true}},
-  Addresses: {Swarm: ['/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star']},
-  EXPERIMENTAL: {dht: true},
+const ipfsconfig = {
+  config: {
+    relay: {enabled: true, hop: {enabled: true}},
+    Addresses: {Swarm: ['/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star']},
+    EXPERIMENTAL: {dht: true},
+  }
 };
+
+const portname = '/chat/1.0.0';
 
 const fcids = [
   ['QmQ2r6iMNpky5f1m4cnm3Yqw8VSvjuKpTcK1X7dBR1LkJF', 'image/gif'], // cats
@@ -25,7 +29,7 @@ async function init() {
   
   log('starting ipfs node: ' + JSON.stringify(config));
   window.IPFS = window.IPFS || window.Ipfs;
-  window.ipfs = new IPFS({ config });
+  window.ipfs = new IPFS(ipfsconfig);
   
   await new Promise(resolve => ipfs.on('ready', resolve));
   let {version} = await ipfs.version();
@@ -52,6 +56,22 @@ async function init() {
   log('ipfs.files.get ' + txtcid);
   for (let data of await ipfs.files.get(txtcid))  
     log('ipfs.files.get -> ' + String.fromCharCode(...data.content));
+  
+  log('ipfs.p2p.on', 'peer:connect');
+  ipfs._libp2pNode.on('peer:connect', peer => {
+      log('peer:connect', peer.id.toB58String());
+  });
+  
+  log('ipfs.libp2p.handle:', portname);
+  ipfs._libp2pNode.handle(portname, (...args) => {
+    log(portname + ':', ...args);
+  });
+  
+  let remotePeer = 'qwerty';
+  log('ipfs.p2p.dial', remotePeer + ':' + portName);
+  nodeDialer.dialProtocol(remotePeer, portname, (...args) => {
+    log('ipfd.p2p.dial ->', ...args);
+  });
 }
 
 function loadScript() {
@@ -67,7 +87,8 @@ function loadScript() {
   });
 }
 
-function log(str) {
+function log(...args) {
+  let str = args.join(' ');
   let time = (Date.now() - basetime)/1000;
   let tstr = time.toFixed(1);
   while (tstr.length < 5)
