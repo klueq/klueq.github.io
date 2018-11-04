@@ -27,7 +27,7 @@ async function init() {
   log('loading the ipfs script');
   await loadScript();
   
-  log('starting ipfs node: ' + JSON.stringify(config));
+  log('starting ipfs node: ' + JSON.stringify(ipfsconfig));
   window.IPFS = window.IPFS || window.Ipfs;
   window.ipfs = new IPFS(ipfsconfig);
   
