@@ -63,8 +63,8 @@ async function init() {
     log('ipfs.files.get -> ' + String.fromCharCode(...data.content));
   
   log('libp2p.handle:', portname);
-  libp2p.handle(portname, (...args) => {
-    log(portname + ':', ...args);
+  libp2p.handle(portname, (protocol, conn) => {
+    log(portname, protocol, conn);
   });
   
   let multiaddrs = libp2p.peerInfo.multiaddrs.toArray().map(ma => ma + '');
@@ -74,8 +74,12 @@ async function init() {
     log('?peer=[...] is not set, so not dialing');
   } else {
     log('libp2p.dial', qargs.peer, portname);
-    libp2p.dialProtocol(qargs.peer, portname, (...args) => {
-      log('libp2p.dial ->', ...args);
+    libp2p.dialProtocol(qargs.peer, portname, (err, conn) => {
+      if (err) {
+        log('libp2p.dial ->', err);  
+      } else {
+        log('libp2p.dial ->', conn);  
+      }      
     });
   }
 }
