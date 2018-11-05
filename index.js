@@ -24,8 +24,11 @@ window.onload = () => {
 };
 
 async function init() {
+  let qargs = parseQueryArgs();
+  log('query args:', JSON.stringify(qargs));
+  
   log('loading the ipfs script');
-  await loadScript();
+  await loadScript(qargs.ipfs);
   
   log('starting ipfs node: ' + JSON.stringify(ipfsconfig));
   window.IPFS = window.IPFS || window.Ipfs;
@@ -64,16 +67,18 @@ async function init() {
     log(portname + ':', ...args);
   });
   
-  let remotePeer = 'QmXcBNGp2SBzbogsbEnHxdrokw6te9y2RU9rKYD1sQc1km';
-  log('libp2p.dial', remotePeer, portname);
-  libp2p.dialProtocol(remotePeer, portname, (...args) => {
-    log('libp2p.dial ->', ...args);
-  });
+  if (!qargs.peer) {
+    log('?peer=[...] is not set, so not dialing');
+  } else {
+    log('libp2p.dial', qargs.peer, portname);
+    libp2p.dialProtocol(qargs.peer, portname, (...args) => {
+      log('libp2p.dial ->', ...args);
+    });
+  }
 }
 
-function loadScript() {
+function loadScript(ver = 'latest') {
   return new Promise((resolve, reject) => {
-    let ver = location.search.slice(1) || 'latest';
     let url = ver.endsWith('.js') ? ver : `https://unpkg.com/ipfs@${ver}/dist/index.js`;
     log('script: ' + url);
     let script = document.createElement('script');
@@ -84,13 +89,25 @@ function loadScript() {
   });
 }
 
+function parseQueryArgs() {
+  let res = {};
+  let str = location.search.slice(1);
+  
+  for (let kvpair of str.split('&')) {
+    let [key, val] = kvpair.split('=');
+    res[key] = val;
+  }
+  
+  return res;
+}
+
 function log(...args) {
   let str = args.join(' ');
   let time = (Date.now() - basetime)/1000;
   let tstr = time.toFixed(1);
   while (tstr.length < 5)
     tstr = '0' + tstr;
-  str = '[+' + tstr + 's] ' + str;
+  str = '[' + tstr + 's] ' + str;
   console.log(str);
   document.body.innerHTML += '<p>' + str;
 }
