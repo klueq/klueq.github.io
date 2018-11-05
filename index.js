@@ -30,6 +30,7 @@ async function init() {
   log('starting ipfs node: ' + JSON.stringify(ipfsconfig));
   window.IPFS = window.IPFS || window.Ipfs;
   window.ipfs = new IPFS(ipfsconfig);
+  window.libp2p = ipfs._libp2pNode;
   
   await new Promise(resolve => ipfs.on('ready', resolve));
   let {version} = await ipfs.version();
@@ -57,15 +58,15 @@ async function init() {
   for (let data of await ipfs.files.get(txtcid))  
     log('ipfs.files.get -> ' + String.fromCharCode(...data.content));
   
-  log('ipfs.libp2p.handle:', portname);
-  ipfs._libp2pNode.handle(portname, (...args) => {
+  log('libp2p.handle:', portname);
+  libp2p.handle(portname, (...args) => {
     log(portname + ':', ...args);
   });
   
   let remotePeer = 'QmXcBNGp2SBzbogsbEnHxdrokw6te9y2RU9rKYD1sQc1km';
-  log('ipfs.p2p.dial', remotePeer + ':' + portname);
-  ipfs._libp2pNode.dialProtocol(remotePeer, portname, (...args) => {
-    log('ipfd.p2p.dial ->', ...args);
+  log('libp2p.dial', remotePeer, portname);
+  libp2p.dialProtocol(remotePeer, portname, (...args) => {
+    log('libp2p.dial ->', ...args);
   });
 }
 
