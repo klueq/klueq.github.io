@@ -67,6 +67,9 @@ async function init() {
     log(portname + ':', ...args);
   });
   
+  let multiaddrs = libp2p.peerInfo.multiaddrs.toArray().map(ma => ma + '');
+  log('libp2p.peerInfo.multiaddrs:', JSON.stringify(multiaddrs));
+  
   if (!qargs.peer) {
     log('?peer=[...] is not set, so not dialing');
   } else {
