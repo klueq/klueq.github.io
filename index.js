@@ -30,7 +30,6 @@ async function init() {
   log('starting ipfs node: ' + JSON.stringify(ipfsconfig));
   window.IPFS = window.IPFS || window.Ipfs;
   window.ipfs = new IPFS(ipfsconfig);
-  window.libp2p = ipfs._libp2pNode;
   
   await new Promise(resolve => ipfs.on('ready', resolve));
   let {version} = await ipfs.version();
@@ -38,6 +37,8 @@ async function init() {
   
   let self = await ipfs.id();
   log('ipfs.id: ' + self.id);
+  
+  window.libp2p = ipfs._libp2pNode;
 
   for (let [fcid, mime] of fcids) {
     log('ipfs.files.get ' + fcid);
