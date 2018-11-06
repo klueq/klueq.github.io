@@ -2,10 +2,12 @@ const basetime = Date.now();
 
 const ipfsconfig = {
   config: {
-    relay: {enabled: true, hop: {enabled: true}},
-    Addresses: {Swarm: ['/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star']},
-    EXPERIMENTAL: {dht: true},
-  }
+    Addresses: {
+      Swarm: ['/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star']
+    }
+  },
+  relay: {enabled: true, hop: {enabled: true}},
+  EXPERIMENTAL: {dht: true}
 };
 
 const portname = '/chat/1.0.0';
