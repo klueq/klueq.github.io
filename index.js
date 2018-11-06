@@ -64,6 +64,12 @@ async function init() {
   for (let data of await ipfs.files.get(txtcid))  
     log('ipfs.files.get -> ' + String.fromCharCode(...data.content));
   
+  log('ipfs.dht.findprovs', txtcid);
+  ipfs.dht.findprovs(txtcid).then(peers => {
+    let ids = peers.map(p => p.id.toB58String());
+    log('ipfs.dht.findprovs ->', JSON.stringify(ids));
+  });
+  
   log('libp2p.handle:', portname);
   libp2p.handle(portname, (protocol, conn) => {
     log(portname, protocol, conn);
