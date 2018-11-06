@@ -17,6 +17,7 @@ const fcids = [
   ['QmRW3V9znzFW9M5FYbitSEvd5dQrPWGvPvgQD6LM22Tv8D', 'image/svg+xml'], // wiki logo
 ];
 
+const dhtcid = 'QmQ2r6iMNpky5f1m4cnm3Yqw8VSvjuKpTcK1X7dBR1LkJF';
 const txtcid = 'QmXXtHtDwXFbCTzMDjacZxid6CCNY4m5oM6MgBhyPVT3Tr';
 
 window.onload = () => {
@@ -59,13 +60,13 @@ async function init() {
       }
     }
   }
-  
+    
   log('ipfs.files.get ' + txtcid);
   for (let data of await ipfs.files.get(txtcid))  
     log('ipfs.files.get -> ' + String.fromCharCode(...data.content));
   
-  log('ipfs.dht.findprovs', txtcid);
-  ipfs.dht.findprovs(txtcid).then(peers => {
+  log('ipfs.dht.findprovs', dhtcid);
+  ipfs.dht.findprovs(dhtcid).then(peers => {
     let ids = peers.map(p => p.id.toB58String());
     log('ipfs.dht.findprovs ->', JSON.stringify(ids));
   });
